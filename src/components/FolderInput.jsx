@@ -1,5 +1,6 @@
 import React from 'react'
 import { saveSongs } from '../data/songDatabase'
+import '../styles/folder.css'
 
 let songList = []
 function FolderInput({ onSongsLoaded }) {
@@ -17,14 +18,24 @@ function FolderInput({ onSongsLoaded }) {
     }
 
   return (
-    <> 
-        <div>Add a folder here</div>
-        <input type="file" 
-                accept="audio/mpeg" 
-                webkitdirectory="true" 
-                multiple 
-                onChange={handleFiles}></input>
-    </>
+    <div className='container'> 
+        <div>
+            <div>Add a folder here</div>
+            <input type="file" 
+                    accept="audio/mpeg" 
+                    webkitdirectory="true" 
+                    multiple 
+                    onChange={handleFiles}></input>
+        </div>
+
+        <div>
+            <div>Add a file here</div>
+            <input type="file" 
+                    accept="audio/mpeg" 
+                    onChange={handleFiles}></input>
+        </div>
+         
+    </div >
   )
 }
 

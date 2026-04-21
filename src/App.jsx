@@ -11,12 +11,18 @@ import NCButton from './components/NCButton'
 import FolderInput from './components/FolderInput';
  import { saveSongs, getSongs } from './data/songDatabase'
  import Desktop from './components/Desktop'
+import { deleteSong as deleteSongFromDB } from './data/songDatabase'
 
  function App() {
   const [playing, setPlay] = useState(false);
   const [song, setSong] = useState(null); 
   const [songs, setSongs] = useState([])
   const { setPitch, setSpeed } = useAudio(song, playing, setPlay)
+
+  function deleteSong(id) {
+    setSongs(songs.filter(s => s.id !== id)) 
+    deleteSongFromDB(id)
+  }
   
   useEffect(() => {
     getSongs().then(savedSongs => {
@@ -55,6 +61,7 @@ import FolderInput from './components/FolderInput';
           setPitch={setPitch}
           setSpeed={setSpeed}
           setSongs={setSongs}
+          deleteSong={deleteSong}
         />
      </>
          

@@ -16,3 +16,8 @@ export async function saveSongs(songs) {
 export async function getSongs() {
   return db.getAll('songs')
 }
+
+export async function deleteSong(id) {
+  const db = await openDB('music-app', 1)
+  await db.delete('songs', id)
+}
