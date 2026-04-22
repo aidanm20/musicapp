@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import '../styles/NCButton.css'
+
+
 function NCButton({setPitch, setSpeed}) {
     const [active, setActive] = useState(false);
 
@@ -15,7 +18,7 @@ function NCButton({setPitch, setSpeed}) {
     }
 
     return (
-        <button onClick={() => {turnthistvoff()}}>{active ? 'Turn Off' : 'Nightcore'}</button>
+        <button className='ncbutton' onClick={() => {turnthistvoff()}}>{active ? 'Turn Off' : 'Nightcore'}</button>
     )
 }
 

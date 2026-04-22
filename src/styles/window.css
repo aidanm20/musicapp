@@ -16,17 +16,17 @@
 .import-window {
     background-color: rgb(212, 230, 101);
     border: 2px solid rgba(163, 169, 2, 0.63);
-    width: 230px;
-    height: 190px;
+    width: 500px;
+    height: 130px;
     position: absolute;
     left: 60%;
     top: 60%;
 }
 
 .mixer-window {
-    background-color: rgb(255, 94, 231);
+    background-color: rgb(247, 165, 235);
     border: 2px solid rgba(177, 3, 122, 0.63);
-    width: 400px;
+    width: 440px;
     height: 300px;
     position: absolute;
     left: 10%;
@@ -45,8 +45,12 @@
     width: 20px;
     height: 20px;
     text-align: center;
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0);
     align-items: center;
+    border: rgb(255, 0, 230) 2px solid;
+    color: rgb(255, 0, 230);
+    font-family: 'Press Start 2P', monospace;
+    cursor: pointer;
 }
 
 .window-content {

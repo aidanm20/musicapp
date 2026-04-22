@@ -19,6 +19,14 @@
     cursor: pointer;
 }
 
+.songRowBroken {
+    opacity: 0.7;
+}
+
+.songRowBroken:hover {
+    cursor: not-allowed;
+}
+
 .contextMenu {
   z-index: 99999;
   position: fixed;

@@ -1,3 +1,17 @@
 .container {
     margin-left: 10px;
+    overflow: hidden;
+}
+
+.importBtn {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 2px solid #ff69b4;
+  color: #000000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px; 
+}
+
+.importBtn input {
+  display: none;   
 }

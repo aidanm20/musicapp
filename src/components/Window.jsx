@@ -10,16 +10,18 @@ function Window({ title, onClose, children, className }) {
     const windowRef = useRef(null)
 
     useEffect(() => {
+        if (!windowRef.current) return
+        const currentWindow = windowRef.current.querySelector('.window-titlebar')
         gsap.registerPlugin(Draggable, InertiaPlugin)
-        Draggable.create('.window', {
+        Draggable.create(windowRef.current, {
         bounds: ".desktop",
-        
+        trigger: currentWindow,  
         })
     }, [])
     
 
   return (
-    <div className={`window ${className || ''}`}>
+    <div ref={windowRef} className={`window ${className || ''}`}>
       <div className="window-titlebar">
         <span>{title}</span>
         <button className='closeButton' onClick={onClose}>X</button>

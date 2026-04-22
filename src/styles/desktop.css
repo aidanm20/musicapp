@@ -5,14 +5,12 @@
 }
 
 body {
+  margin: 0;
   overflow: hidden;
 }
 
 .desktop {
-  background-color: #1a0a2e;
-  background-image: 
-    radial-gradient(ellipse at 20% 50%, rgba(255,0,128,0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(0,255,255,0.1) 0%, transparent 50%);
+  background: transparent;
   width: 100vw;
   height: 100vh;
   font-family: 'VT323', monospace;
@@ -27,8 +25,8 @@ body {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
+    rgba(0, 0, 0, 0.023) 2px,
+    rgba(0, 0, 0, 0.03) 4px
   );
   pointer-events: none;
   z-index: 9999;  /* very high so it's above dragged windows */
@@ -116,9 +114,10 @@ body {
 .taskbar {
   position: absolute;
   top: 90vh;
+  bottom: 100vh;
   left: 0;
-  right: 0;
-  height: 44px;
+  right: 0; 
+  min-height: 10vh;
   background: rgba(26,10,46,0.95);
   border-top: 3px solid #ff69b4;
   display: flex;
@@ -130,4 +129,11 @@ body {
 
 .hidden {
     opacity: 0;
+}
+
+.webgl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
 }
