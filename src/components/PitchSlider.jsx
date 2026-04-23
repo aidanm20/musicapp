@@ -2,7 +2,7 @@ import '../App.css'
 import '../styles/slider.css'
 import { useState} from 'react'
 function PitchSlider({ setPitch }) {
-    const [value, setValue] = useState(1)
+    const [value, setValue] = useState(0)
    
 
     return (
@@ -22,7 +22,7 @@ function PitchSlider({ setPitch }) {
         }
            }
       />
-      <span>{value}x</span>
+      <span>{value} x</span>
     </div>
   )
 }

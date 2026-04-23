@@ -5,7 +5,11 @@ import DisplaySongs from './DisplaySongs'
 import FolderInput from './FolderInput'
 import NCButton from './NCButton'
 import SpeedSlider from './SpeedSlider'
+import BackButton from './BackButton'
+import PlayButton from './PlayButton'
+import NextButton from './NextButton'
 import PitchSlider from './PitchSlider'
+import SeekBar from './SeekBar'
 import * as THREE from 'three'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
@@ -16,13 +20,19 @@ import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 import gridTextureUrl from '../assets/maps/grid-6.png'
 import displacementUrl from '../assets/maps/displacement-7.png'
 import metalnessUrl from '../assets/maps/metalness-2.png'
+import noteIcon from '../assets/svg/music-note-svgrepo-com.svg'
+import fileIcon from '../assets/svg/music-note-on-folder-svgrepo-com.svg'
+import gearIcon from '../assets/svg/gear-svgrepo-com.svg'
+import mixerIcon from '../assets/svg/mixer-studio-audio-sound-svgrepo-com.svg'
 
-function Desktop({ songs, setSong, setPitch, setSpeed, addSongs, deleteSong }) {
-
+function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime  }) {
+ 
     const [openSongs, setOpenSongs] = useState(false)
     const [openMixer, setOpenMixer] = useState(false)
     const [openImport, setOpenImport] = useState(false)
     const [openManage, setOpenManage] = useState(false)
+
+     
 
     const canvasRef = useRef(null)
     useEffect(() => {
@@ -36,7 +46,7 @@ const metalnessTexture = textureLoader.load(metalnessUrl);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#0e0a10');
 // Fog
-const fog = new THREE.Fog("#242222", 3, 5);
+const fog = new THREE.Fog("#242222", 1,4);
 scene.fog = fog;
 
 // Objects
@@ -252,19 +262,35 @@ return () => {
       <div className="scanlines"></div>
       <div className="icons">
         <div className="icon" onClick={() => setOpenSongs(!openSongs)}>
-          <div className="icon-img songs">🎵</div>
+          <div className="icon-img songs"><img 
+                                  src={noteIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
           <div className="icon-label">SONGS</div>
         </div>
         <div className="icon" onClick={() => setOpenMixer(!openMixer)}>
-          <div className="icon-img mixer">🎚️</div>
+          <div className="icon-img mixer"><img 
+                                  src={mixerIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
           <div className="icon-label">MIXER</div> 
         </div>
         <div className="icon" onClick={() => setOpenImport(!openImport)}>
-          <div className="icon-img import">📁</div>
+          <div className="icon-img import"><img 
+                                  src={fileIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
           <div className="icon-label">IMPORT</div> 
         </div>
         <div className="icon" onClick={() => setOpenManage(!openManage)}>
-          <div className="icon-img manage">⚙️</div>
+          <div className="icon-img manage"><img 
+                                  src={gearIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
           <div className="icon-label">MANAGE</div> 
         </div>
       </div>
@@ -273,11 +299,23 @@ return () => {
        {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} children={<><PitchSlider setPitch={setPitch} /><SpeedSlider setSpeed={setSpeed} /><NCButton setPitch={setPitch} setSpeed={setSpeed} /></>} className='mixer-window' ></Window> : null}
 
        {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} children={<FolderInput onSongsLoaded={addSongs} />} className='import-window' ></Window> : null}
-
+{openManage ? <Window title="MANAGE" onClose={() => setOpenManage(!openManage)} children={'nothing here yet!'} className='manage-window' ></Window> : null}
     </div>
     <div className="taskbar">
-        ♫ nothing playing
-      </div></>
+         
+        {song ? song.title : '♫ nothing playing' }
+        {song && (
+          <>
+            <BackButton song={song} setSong={setSong} songs={songs} /> 
+            <PlayButton playing={playing} setPlay={setPlay} song={song} /> 
+            <NextButton song={song} setSong={setSong} songs={songs} />
+            <SeekBar setTime={setTime} currTime={currTime} totalTime={totalTime} />
+          </>
+        )
+      }
+         
+      </div>
+      </>
   )
 }
 

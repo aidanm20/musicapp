@@ -11,7 +11,7 @@ function NCButton({setPitch, setSpeed}) {
             setSpeed(1.23456789) 
             setActive(!active)
         } else {
-            setPitch(1) 
+            setPitch(0) 
             setSpeed(1) 
             setActive(!active)
         }

@@ -1,4 +1,5 @@
- 
+ import '../styles/taskbarButtons.css'
+ import backIcon from '../assets/svg/icons8-rewind-32.png'
 
 function BackButton({song, setSong, songs}) {
     function handleSongs() {
@@ -12,7 +13,14 @@ function BackButton({song, setSong, songs}) {
     }
      
     return (
-      <button onClick={() => setSong(handleSongs)}>back</button>
+      <button className="taskbarButton" onClick={() => setSong(handleSongs())}>
+        <img 
+                src={backIcon} 
+                alt='back'
+                width="32"
+                height="32"
+              />
+      </button>
     )
  
  }

@@ -1,0 +1,15 @@
+.taskbarButton {
+  background-color: transparent;
+  border: 0;
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(300deg);
+  align-items: center;
+  cursor: pointer;
+}
+
+.taskbarButton:hover {
+  cursor: pointer;
+}
+
+.taskbarButton img {
+  cursor: pointer;
+}

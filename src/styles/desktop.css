@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  cursor: url(../assets/svg/pinkCursor.svg) 12 12, auto;
 }
 
 body {
@@ -125,6 +126,7 @@ body {
   padding: 0 16px;
   color: #00ffff;
   font-family: 'VT323', monospace;
+  
 }
 
 .hidden {

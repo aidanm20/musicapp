@@ -33,6 +33,16 @@
     top: 10%;
 }
 
+.manage-window {
+    background-color: rgb(165, 247, 179);
+    border: 2px solid rgba(3, 177, 15, 0.63);
+    width: 200px;
+    height: 120px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
 .window-titlebar {
     font-size: 40px;
     padding: 20px;
