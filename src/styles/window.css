@@ -45,6 +45,16 @@
     top: 50%;
 }
 
+.tutorial-window {
+    background-color: #f5febc ;  
+    border: 2px solid #f7ff60;
+    width: 400px;
+    height: 220px;
+    position: absolute;
+    left: 5%;
+    top: 50%;
+}
+
 .window-titlebar {
     font-size: 40px;
     padding: 20px;

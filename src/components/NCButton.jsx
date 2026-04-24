@@ -2,7 +2,7 @@ import { useState } from 'react'
 import '../styles/NCButton.css'
 
 
-function NCButton({setPitch, setSpeed}) {
+function NCButton({setPitch, setSpeed, setMode}) {
     const [active, setActive] = useState(false);
 
     function turnthistvoff() {
@@ -10,10 +10,12 @@ function NCButton({setPitch, setSpeed}) {
             setPitch(2.69) 
             setSpeed(1.23456789) 
             setActive(!active)
+            setMode('nightcore')
         } else {
             setPitch(0) 
             setSpeed(1) 
             setActive(!active)
+            setMode('default')
         }
     }
 

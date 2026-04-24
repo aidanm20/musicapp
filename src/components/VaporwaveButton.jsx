@@ -2,7 +2,7 @@ import { useState } from 'react'
 import '../styles/vaporwavebutton.css'
 
 
-function VaporwaveButton({setPitch, setSpeed, setReverb, setDecay, setBitCrush}) {
+function VaporwaveButton({setPitch, setSpeed, setReverb, setDecay, setBitCrush, setMode}) {
     const [active, setActive] = useState(false);
 
     function turnthistvoff() {
@@ -13,12 +13,14 @@ function VaporwaveButton({setPitch, setSpeed, setReverb, setDecay, setBitCrush})
             setReverb(.8)
             setBitCrush(7)
             setActive(!active)
+            setMode('vaporwave')
         } else {
             setPitch(0) 
             setSpeed(1) 
             setDecay(.5)
             setReverb(0)
             setActive(!active)
+            setMode('default')
         }
     }
 

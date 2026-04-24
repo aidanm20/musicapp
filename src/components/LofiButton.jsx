@@ -2,7 +2,7 @@ import { useState } from 'react'
 import '../styles/lofibutton.css'
 
 
-function LofiButton({setPitch, setSpeed, setReverb, setDecay, setFilter}) {
+function LofiButton({setPitch, setSpeed, setReverb, setDecay, setFilter, setMode}) {
     const [active, setActive] = useState(false);
 
     function turnthistvoff() {
@@ -13,6 +13,7 @@ function LofiButton({setPitch, setSpeed, setReverb, setDecay, setFilter}) {
             setReverb(.5)
             setFilter(1000)
             setActive(!active)
+            setMode('lofi')
         } else {
             setPitch(0) 
             setSpeed(1) 
@@ -20,6 +21,7 @@ function LofiButton({setPitch, setSpeed, setReverb, setDecay, setFilter}) {
             setReverb(0)
             setFilter(20000)
             setActive(!active)
+            setMode('default')
         }
     }
 

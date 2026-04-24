@@ -93,6 +93,11 @@ body {
     border: 3px solid #ffa95e;
     box-shadow: 4px 4px 0 #c78042;
 }
+.tutorial {
+  background: linear-gradient(135deg, #f5febc, #f7ff60);
+    border: 3px solid #f4ff5e;
+    box-shadow: 4px 4px 0 #c0c742;
+}
 
 .icon-img {
   width: 70px;
@@ -119,7 +124,7 @@ body {
   left: 0;
   right: 0; 
   min-height: 10vh;
-  background: rgba(26,10,46,0.95);
+  background: rgba(38, 0, 33, 0.774);
   border-top: 3px solid #fecde6;
   display: flex;
   align-items: center;

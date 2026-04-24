@@ -24,21 +24,28 @@ import noteIcon from '../assets/svg/music-note-svgrepo-com.svg'
 import fileIcon from '../assets/svg/music-note-on-folder-svgrepo-com.svg'
 import gearIcon from '../assets/svg/gear-svgrepo-com.svg'
 import mixerIcon from '../assets/svg/mixer-studio-audio-sound-svgrepo-com.svg'
+import tutorialIcon from '../assets/svg/info-svgrepo-com.svg'
 import ReverbSlider from './reverbSlider'
 import LowBitButton from './LowBitButton'
 import VaporwaveButton from './VaporwaveButton'
 import LofiButton from './LofiButton'
+import TutorialInfo from './TutorialInfo'
 
-function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter  }) {
+function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter, meterRef }) {
  
     const [openSongs, setOpenSongs] = useState(false)
     const [openMixer, setOpenMixer] = useState(false)
     const [openImport, setOpenImport] = useState(false)
     const [openManage, setOpenManage] = useState(false)
-
+    const [openTutorial, setOpenTutorial] = useState(false)
+    const [mode, setMode] = useState('default')
+   
      
 
     const canvasRef = useRef(null)
+    const sunRef = useRef(null)
+    const currentColorRef = useRef(null)
+     
     useEffect(() => {
       if (!canvasRef.current) return
 const textureLoader = new THREE.TextureLoader();
@@ -95,8 +102,8 @@ scene.add(plane2);
   const sgeometry = new THREE.SphereGeometry(.8, 32, 16)
 const smaterial = new THREE.ShaderMaterial({
   uniforms: {
-    topColor: { value: new THREE.Color('#ffc142') },    // orange
-    bottomColor: { value: new THREE.Color(0x9900ff) }  // purple
+    topColor: { value: new THREE.Color('#ffc142') },     
+    bottomColor: { value: new THREE.Color(0x9900ff) }   
   },
   vertexShader: `
     varying vec2 vUv;
@@ -116,8 +123,10 @@ const smaterial = new THREE.ShaderMaterial({
   `
 })
 const sun = new THREE.Mesh(sgeometry, smaterial) 
+sunRef.current = sun
 sun.position.set(0, 0.15, -1.5)
 scene.add(sun)
+
 //stars
 const starGeometry = new THREE.SphereGeometry(0.008, 6, 6)
 const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
@@ -230,12 +239,31 @@ window.addEventListener("resize", handleResize);
 
 const clock = new THREE.Clock();
 let animationId;
+let scrollPos = 0;
 
 const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
+    const delta = clock.getDelta();
     controls.update();
-    plane.position.z = (elapsedTime * 0.15) % 2;
-    plane2.position.z = ((elapsedTime * 0.15) % 2) - 2;
+
+
+    if (sunRef.current && currentColorRef.current) {
+      sunRef.current.material.uniforms.topColor.value.lerp(new THREE.Color(currentColorRef.current.top), 0.02)
+      sunRef.current.material.uniforms.bottomColor.value.lerp(new THREE.Color(currentColorRef.current.bottom), 0.02)
+    }
+
+    const meterValue = meterRef?.current?.getValue()
+    const minDb = -100
+    const maxDb = 0
+    const minSpeed = 0.04
+    const maxSpeed = 0.4
+    const rawDb = Array.isArray(meterValue) ? meterValue[0] : meterValue
+    const db = Number.isFinite(rawDb) ? rawDb : minDb
+    const clampedDb = THREE.MathUtils.clamp(db, minDb, maxDb)
+    const normalizedDb = (clampedDb - minDb) / (maxDb - minDb)
+    const safeSpeed = minSpeed + normalizedDb * (maxSpeed - minSpeed)
+    scrollPos = (scrollPos + delta * safeSpeed) % 2;
+    plane.position.z = scrollPos + 0.15;
+    plane2.position.z = scrollPos - 1.85;
     effectComposer.render();
     animationId = window.requestAnimationFrame(tick);
 };
@@ -250,8 +278,32 @@ return () => {
     material.dispose();
 };
 
-    },[])
+    },[meterRef])
 
+    useEffect(() => {
+      if (!sunRef.current) return 
+      if(mode == 'default') {
+        currentColorRef.current = {
+          top:'#ffc142',
+          bottom: 0x9900ff
+        }
+      } else if (mode == 'nightcore') {
+        currentColorRef.current = {
+          top:'#ff69b4',
+          bottom: '#01cbcb'
+        }
+      } else if (mode == 'vaporwave') {
+        currentColorRef.current = {
+          top:'#564aff' ,
+          bottom: '#ff3939' 
+        }
+      } else if (mode == 'lofi') {
+        currentColorRef.current = {
+          top:'#84ff5f',
+          bottom:'#c900fb' 
+        }
+      }
+    }, [mode])
 
     // we put the 3d canvas in a z index behind the desktop which has a transparent background
   return (
@@ -297,6 +349,15 @@ return () => {
                                   height="26"/></div>
           <div className="icon-label">MANAGE</div> 
         </div>
+
+        <div className="icon" onClick={() => setOpenTutorial(!openTutorial)}>
+          <div className="icon-img tutorial"><img 
+                                  src={tutorialIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
+          <div className="icon-label">TUTORIAL</div> 
+        </div>
       </div>
       
        {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} children={<DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} /> } className="songs-window"></Window> : null}
@@ -304,15 +365,16 @@ return () => {
        <PitchSlider setPitch={setPitch} />
        <SpeedSlider setSpeed={setSpeed} />
        <ReverbSlider setReverb={setReverb} />
-       <NCButton setPitch={setPitch} setSpeed={setSpeed} />
-       <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} />
-       <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} />
+       <NCButton setPitch={setPitch} setSpeed={setSpeed} setMode={setMode} />
+       <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} setMode={setMode} />
+       <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} setMode={setMode} />
        {//<LowBitButton setBitCrush={setBitCrush} />
        }
        </>} className='mixer-window' ></Window> : null}
 
        {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} children={<FolderInput onSongsLoaded={addSongs} />} className='import-window' ></Window> : null}
 {openManage ? <Window title="MANAGE" onClose={() => setOpenManage(!openManage)} children={'nothing here yet!'} className='manage-window' ></Window> : null}
+{openTutorial ? <Window title="TUTORIAL" onClose={() => setOpenTutorial(!openTutorial)} children={<TutorialInfo />} className='tutorial-window' ></Window> : null}
     </div>
     <div className="taskbar">
          
