@@ -19,7 +19,7 @@ function SpeedSlider({ setSpeed }) {
         }
            }
       />
-      <span>{value}x</span>
+      <span>{value } x</span>
     </div>
   )
 }

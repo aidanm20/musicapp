@@ -1,30 +1,30 @@
 import '../App.css'
 import '../styles/slider.css'
 import { useState} from 'react'
-function PitchSlider({ setPitch }) {
+function ReverbSlider({ setReverb }) {
     const [value, setValue] = useState(0)
    
-
+    let percentage = value * 100
     return (
     <div>
-      <label>Pitch</label>
+      <label>Reverb</label>
       <input
         type="range"
-        min="-7"
+        min="0"
         step="0.01"
-        max="7"
+        max="1"
         defaultValue="0"
         onChange={(e) => 
         {
           let newValue = parseFloat(e.target.value)
           setValue(newValue)
-          setPitch(newValue)
+          setReverb(newValue)
         }
            }
       />
-      <span>{value} st</span>
+      <span>{Math.floor(percentage)} %</span>
     </div>
   )
 }
 
-export default PitchSlider
+export default ReverbSlider

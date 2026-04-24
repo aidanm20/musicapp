@@ -87,7 +87,7 @@ async function hydrateSong(savedSong) {
   const [playing, setPlay] = useState(false);
   const [song, setSong] = useState(null); 
   const [songs, setSongs] = useState([])
-  const { setPitch, setSpeed, setTime, currTime, totalTime } = useAudio(song, playing, setPlay)
+  const { setPitch, setSpeed, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush , setFilter} = useAudio(song, playing, setPlay)
 
   function selectSong(nextSong) {
     if (nextSong?.broken) {
@@ -209,7 +209,13 @@ async function hydrateSong(savedSong) {
           setSpeed={setSpeed}
           addSongs={addSongs}
           deleteSong={deleteSong} 
-          setTime={setTime} currTime={currTime} totalTime={totalTime}
+          setTime={setTime} 
+          currTime={currTime} 
+          totalTime={totalTime} 
+          setReverb={setReverb} 
+          setDecay={setDecay} 
+          setBitCrush={setBitCrush}
+          setFilter={setFilter}
         />
      </>
          

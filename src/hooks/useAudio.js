@@ -14,6 +14,9 @@ function stopPlayer(player) {
 export function useAudio(song, playing, setPlay) {
   const audioRef = useRef(null)
   const pitchRef = useRef(null)
+  const reverbRef = useRef(null)
+  const bitCrushRef= useRef(null)
+  const filterRef = useRef(null)
   const userPitchRef = useRef(0)
   const speedRef = useRef(1)
   const progressTimerRef = useRef(null)
@@ -163,7 +166,11 @@ export function useAudio(song, playing, setPlay) {
   }, [clearProgressTimer, getLiveTime])
 
   useEffect(() => {
-    pitchRef.current = new Tone.PitchShift({ windowSize: 0.1 }).toDestination()
+    reverbRef.current = new Tone.Reverb({ decay: 4, wet: 0 }).toDestination()
+     
+    filterRef.current = new Tone.Filter({frequency: 20000}).connect(reverbRef.current)
+    bitCrushRef.current = new Tone.BitCrusher({bits: 8}).connect(filterRef.current)
+    pitchRef.current = new Tone.PitchShift({ windowSize: 0.1 }).connect(bitCrushRef.current)
     applyEffectivePitch()
 
     return () => {
@@ -175,9 +182,14 @@ export function useAudio(song, playing, setPlay) {
         audioRef.current.dispose()
         audioRef.current = null
       }
-
+      bitCrushRef.current?.dispose()
+      bitCrushRef.current = null
       pitchRef.current?.dispose()
       pitchRef.current = null
+      reverbRef.current?.dispose()
+      reverbRef.current = null
+      filterRef.current?.dispose()
+      filterRef.current = null
     }
   }, [applyEffectivePitch, clearProgressTimer, clearResetTimer])
 
@@ -284,6 +296,18 @@ export function useAudio(song, playing, setPlay) {
     applyEffectivePitch()
   }
 
+  function setReverb(value) {
+        reverbRef.current.wet.value = value
+  }
+
+  function setDecay(value) {
+    reverbRef.current.decay = value
+  }
+
+  function setBitCrush(value) {
+    bitCrushRef.current.bits.value = value
+  }
+
   function setSpeed(value) {
     const numericValue = Number(value)
     speedRef.current = numericValue
@@ -297,6 +321,10 @@ export function useAudio(song, playing, setPlay) {
     }
 
     applyEffectivePitch()
+  }
+
+  function setFilter(value) {
+    filterRef.current.frequency.value = value
   }
 
   function setTime(value) {
@@ -331,5 +359,5 @@ export function useAudio(song, playing, setPlay) {
     startProgressTimer()
   }
 
-  return { setPitch, setSpeed, setTime, currTime, totalTime }
+  return { setPitch, setSpeed, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter }
 }

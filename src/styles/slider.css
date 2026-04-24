@@ -2,18 +2,18 @@ input[type="range"] {
   -webkit-appearance: none;   
   appearance: none;
   width: 70%;
-  height: 4px;
+  height: 5px;
   background: #00ffff;
   outline: none;
   border: none;
   margin: 20px;
-  border: #8b0057 1px solid;
+  border: #ff8bd5  1.5px solid;
 }
  
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
+  width: 6px;
   height: 16px;
   background: #00ffff;
   border: 2px solid #ff69b4;

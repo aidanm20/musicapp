@@ -3,9 +3,11 @@
     overflow: visible;
 }
 
+ 
+
 .songs-window {
-    background-color: rgb(116, 236, 247);
-    border: 2px solid rgba(1, 151, 51, 0.63);
+    background-color: #fecde6;
+    border: 2px solid #fd84c1;
     width: 600px;
     height: 450px;
     position: absolute;
@@ -14,8 +16,8 @@
 }
 
 .import-window {
-    background-color: rgb(212, 230, 101);
-    border: 2px solid rgba(163, 169, 2, 0.63);
+    background-color: #ccaaff;
+    border: 2px solid #9351f7;
     width: 500px;
     height: 130px;
     position: absolute;
@@ -24,9 +26,9 @@
 }
 
 .mixer-window {
-    background-color: rgb(247, 165, 235);
-    border: 2px solid rgba(177, 3, 122, 0.63);
-    width: 440px;
+    background-color: #bdfde1;
+    border: 2px solid #00ff91;
+    width: 450px;
     height: 300px;
     position: absolute;
     left: 10%;
@@ -34,8 +36,8 @@
 }
 
 .manage-window {
-    background-color: rgb(165, 247, 179);
-    border: 2px solid rgba(3, 177, 15, 0.63);
+    background-color: #fedbbc;
+    border: 2px solid #ffaa60;
     width: 200px;
     height: 120px;
     position: absolute;

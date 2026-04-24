@@ -24,8 +24,12 @@ import noteIcon from '../assets/svg/music-note-svgrepo-com.svg'
 import fileIcon from '../assets/svg/music-note-on-folder-svgrepo-com.svg'
 import gearIcon from '../assets/svg/gear-svgrepo-com.svg'
 import mixerIcon from '../assets/svg/mixer-studio-audio-sound-svgrepo-com.svg'
+import ReverbSlider from './reverbSlider'
+import LowBitButton from './LowBitButton'
+import VaporwaveButton from './VaporwaveButton'
+import LofiButton from './LofiButton'
 
-function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime  }) {
+function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter  }) {
  
     const [openSongs, setOpenSongs] = useState(false)
     const [openMixer, setOpenMixer] = useState(false)
@@ -266,7 +270,7 @@ return () => {
                                   src={noteIcon}
                                   alt="options"
                                   width="26"
-                                  height="26"/></div>
+                                  height="26" /></div>
           <div className="icon-label">SONGS</div>
         </div>
         <div className="icon" onClick={() => setOpenMixer(!openMixer)}>
@@ -296,7 +300,16 @@ return () => {
       </div>
       
        {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} children={<DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} /> } className="songs-window"></Window> : null}
-       {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} children={<><PitchSlider setPitch={setPitch} /><SpeedSlider setSpeed={setSpeed} /><NCButton setPitch={setPitch} setSpeed={setSpeed} /></>} className='mixer-window' ></Window> : null}
+       {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} children={<>
+       <PitchSlider setPitch={setPitch} />
+       <SpeedSlider setSpeed={setSpeed} />
+       <ReverbSlider setReverb={setReverb} />
+       <NCButton setPitch={setPitch} setSpeed={setSpeed} />
+       <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} />
+       <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} />
+       {//<LowBitButton setBitCrush={setBitCrush} />
+       }
+       </>} className='mixer-window' ></Window> : null}
 
        {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} children={<FolderInput onSongsLoaded={addSongs} />} className='import-window' ></Window> : null}
 {openManage ? <Window title="MANAGE" onClose={() => setOpenManage(!openManage)} children={'nothing here yet!'} className='manage-window' ></Window> : null}

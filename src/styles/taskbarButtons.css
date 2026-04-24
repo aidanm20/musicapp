@@ -1,9 +1,16 @@
 .taskbarButton {
   background-color: transparent;
   border: 0;
-  filter: invert(1) sepia(1) saturate(5) hue-rotate(300deg);
+  filter: brightness(0) saturate(100%) invert(51%) sepia(90%) saturate(800%) hue-rotate(295deg) brightness(1.1);
   align-items: center;
   cursor: pointer;
+  border: 3px rgb(0, 0, 0) solid;
+  margin: 7px;
+  padding: 2px;
+}
+
+.playButton {
+
 }
 
 .taskbarButton:hover {

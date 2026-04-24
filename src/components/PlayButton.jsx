@@ -4,12 +4,12 @@
  
  function PlayButton( {playing, setPlay}) {
   return (
-    <button className="taskbarButton" onClick={() => setPlay(!playing)}>
+    <button className="taskbarButton playButton" onClick={() => setPlay(!playing)}>
       <img 
         src={playing ? pauseIcon : playIcon} 
         alt={playing ? 'Pause' : 'Play'}
-        width="32"
-        height="32"
+        width="38"
+        height="38"
       />
     </button>
   )
