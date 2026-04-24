@@ -31,6 +31,7 @@ import VaporwaveButton from './VaporwaveButton'
 import LofiButton from './LofiButton'
 import TutorialInfo from './TutorialInfo'
 
+
 function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter, meterRef }) {
  
     const [openSongs, setOpenSongs] = useState(false)
@@ -45,12 +46,14 @@ function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, a
     const canvasRef = useRef(null)
     const sunRef = useRef(null)
     const currentColorRef = useRef(null)
+    const materialRef = useRef(null)
+    const playingRef = useRef(null)
      
     useEffect(() => {
       if (!canvasRef.current) return
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load(gridTextureUrl);
-const terrainTexture = textureLoader.load(displacementUrl);
+const terrainTexture = textureLoader.load(displacementUrl); 
 const metalnessTexture = textureLoader.load(metalnessUrl);
 
 // Scene
@@ -82,6 +85,7 @@ const material = new THREE.MeshStandardMaterial({
      */ 
     roughness: 0.5,
 });
+materialRef.current = material
 
 const plane = new THREE.Mesh(geometry, material);
 plane.rotation.x = -Math.PI * 0.5;
@@ -252,7 +256,7 @@ const tick = () => {
     }
 
     const meterValue = meterRef?.current?.getValue()
-    const minDb = -100
+    const minDb = -30
     const maxDb = 0
     const minSpeed = 0.04
     const maxSpeed = 0.4
@@ -264,6 +268,21 @@ const tick = () => {
     scrollPos = (scrollPos + delta * safeSpeed) % 2;
     plane.position.z = scrollPos + 0.15;
     plane2.position.z = scrollPos - 1.85;
+
+    const targetDisplacement = 0.2 + normalizedDb * 0.6
+    if (materialRef.current) {
+
+      if(!playingRef.current) {
+        //materialRef.current.displacementScale = .4
+        materialRef.current.displacementScale += (.4 - materialRef.current.displacementScale) * 0.01
+      }  
+
+      if (playingRef.current) {
+        //materialRef.current.displacementScale = 0.2 + normalizedDb * 0.6
+        materialRef.current.displacementScale += (targetDisplacement - materialRef.current.displacementScale) * 0.05
+      }
+       
+    }
     effectComposer.render();
     animationId = window.requestAnimationFrame(tick);
 };
@@ -280,6 +299,7 @@ return () => {
 
     },[meterRef])
 
+    //colors of sun! >_<
     useEffect(() => {
       if (!sunRef.current) return 
       if(mode == 'default') {
@@ -304,6 +324,11 @@ return () => {
         }
       }
     }, [mode])
+
+    //for playing or not
+    useEffect(() => {
+      playingRef.current = playing
+    }, [playing])
 
     // we put the 3d canvas in a z index behind the desktop which has a transparent background
   return (
