@@ -40,6 +40,17 @@ function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, a
     const [openManage, setOpenManage] = useState(false)
     const [openTutorial, setOpenTutorial] = useState(false)
     const [mode, setMode] = useState('default')
+    const [activeButton, setActiveButton] = useState(null)
+
+    function resetAllEffects() {
+        setPitch(0)
+        setSpeed(1)
+        setDecay(0.5)
+        setReverb(0)
+        setFilter(20000)
+        setBitCrush(8)
+        setMode('default')
+    }
    
      
 
@@ -387,12 +398,12 @@ return () => {
       
        {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} children={<DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} /> } className="songs-window"></Window> : null}
        {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} children={<>
-       <PitchSlider setPitch={setPitch} />
-       <SpeedSlider setSpeed={setSpeed} />
-       <ReverbSlider setReverb={setReverb} />
-       <NCButton setPitch={setPitch} setSpeed={setSpeed} setMode={setMode} />
-       <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} setMode={setMode} />
-       <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} setMode={setMode} />
+       <PitchSlider setPitch={setPitch} disabled={activeButton !== null} />
+       <SpeedSlider setSpeed={setSpeed} disabled={activeButton !== null} />
+       <ReverbSlider setReverb={setReverb} disabled={activeButton !== null} />
+       <NCButton setPitch={setPitch} setSpeed={setSpeed} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
+       <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
+       <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
        {//<LowBitButton setBitCrush={setBitCrush} />
        }
        </>} className='mixer-window' ></Window> : null}

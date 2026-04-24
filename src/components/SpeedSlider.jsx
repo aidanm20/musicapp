@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-function SpeedSlider({ setSpeed }) {
+function SpeedSlider({ setSpeed, disabled }) {
   let [value, setValue] = useState(1)
     return (
     <div>
@@ -11,6 +11,7 @@ function SpeedSlider({ setSpeed }) {
         max="3"
         step="0.01"
         defaultValue="1"
+        disabled={disabled}
         onChange={(e) => 
         {
           let newValue = e.target.value

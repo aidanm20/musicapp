@@ -1,7 +1,7 @@
 import '../App.css'
 import '../styles/slider.css'
 import { useState} from 'react'
-function PitchSlider({ setPitch }) {
+function PitchSlider({ setPitch, disabled }) {
     const [value, setValue] = useState(0)
    
 
@@ -14,6 +14,7 @@ function PitchSlider({ setPitch }) {
         step="0.01"
         max="7"
         defaultValue="0"
+        disabled={disabled}
         onChange={(e) => 
         {
           let newValue = parseFloat(e.target.value)
