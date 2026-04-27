@@ -1,6 +1,7 @@
 .window {
-     
-    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
  
@@ -35,14 +36,14 @@
     top: 10%;
 }
 
-.manage-window {
+.queue-window {
     background-color: #fedbbc;
     border: 2px solid #ffaa60;
-    width: 200px;
-    height: 120px;
+    width: 400px;
+    height: 500px;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 20%;
 }
 
 .tutorial-window {
@@ -76,7 +77,27 @@
 }
 
 .window-content {
+    flex: 1;
     overflow-y: auto;
-    max-height: 350px;
     overflow-x: hidden;
+    min-height: 0;
+}
+
+.window-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.window-content::-webkit-scrollbar-track {
+    background: #1a0030;
+    border-left: 2px solid #7300ff;
+}
+
+.window-content::-webkit-scrollbar-thumb {
+    background: #ff69b4;
+    border: 2px solid #00ffff;
+}
+
+.window-content::-webkit-scrollbar-thumb:hover {
+    background: #00ffff;
+    border-color: #ff69b4;
 }

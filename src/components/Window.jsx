@@ -5,7 +5,7 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 import '../styles/desktop.css'
 import { useRef, useEffect} from 'react'
 
-function Window({ title, onClose, children, className }) {
+function Window({ title, onClose, children, className, zIndex, onFocus }) {
 
     const windowRef = useRef(null)
 
@@ -15,13 +15,13 @@ function Window({ title, onClose, children, className }) {
         gsap.registerPlugin(Draggable, InertiaPlugin)
         Draggable.create(windowRef.current, {
         bounds: ".desktop",
-        trigger: currentWindow,  
+        trigger: currentWindow,
         })
     }, [])
-    
+
 
   return (
-    <div ref={windowRef} className={`window ${className || ''}`}>
+    <div ref={windowRef} className={`window ${className || ''}`} style={{ zIndex }} onPointerDown={onFocus}>
       <div className="window-titlebar">
         <span>{title}</span>
         <button className='closeButton' onClick={onClose}>X</button>

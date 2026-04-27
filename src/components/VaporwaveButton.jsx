@@ -7,11 +7,11 @@ function VaporwaveButton({setPitch, setSpeed, setReverb, setDecay, setBitCrush, 
     function turnthistvoff() {
         if (!active) {
             resetAllEffects()
-            setPitch(-3)
+            setPitch(-7)
             setSpeed(.8)
             setDecay(7)
             setReverb(.8)
-            setBitCrush(7)
+            setBitCrush(6)
             setActiveButton('vaporwave')
             setMode('vaporwave')
         } else {

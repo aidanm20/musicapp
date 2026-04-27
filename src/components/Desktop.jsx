@@ -30,17 +30,30 @@ import LowBitButton from './LowBitButton'
 import VaporwaveButton from './VaporwaveButton'
 import LofiButton from './LofiButton'
 import TutorialInfo from './TutorialInfo'
+import LoopButton from './LoopButton'
+import ShuffleButton from './ShuffleButton'
+import QueueDisplay from './QueueDisplay'
 
 
-function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter, meterRef }) {
- 
+function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, addSongs, deleteSong, setTime, currTime, totalTime, setReverb, setDecay, setBitCrush, setFilter, meterRef, queue, setQueue, playSong, loopActive, setLoopActive, shuffleActive, setShuffleActive }) {
+
     const [openSongs, setOpenSongs] = useState(false)
     const [openMixer, setOpenMixer] = useState(false)
     const [openImport, setOpenImport] = useState(false)
-    const [openManage, setOpenManage] = useState(false)
+    const [openQueue, setOpenQueue] = useState(false)
     const [openTutorial, setOpenTutorial] = useState(false)
     const [mode, setMode] = useState('default')
     const [activeButton, setActiveButton] = useState(null)
+    const [combinedOrder, setCombinedOrder] = useState(null)
+    const [windowOrder, setWindowOrder] = useState(['songs', 'mixer', 'import', 'queue', 'tutorial'])
+
+    function bringToFront(name) {
+        setWindowOrder(prev => [...prev.filter(n => n !== name), name])
+    }
+
+    function getZIndex(name) {
+        return 100 + windowOrder.indexOf(name)
+    }
 
     function resetAllEffects() {
         setPitch(0)
@@ -50,6 +63,58 @@ function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, a
         setFilter(20000)
         setBitCrush(8)
         setMode('default')
+    }
+
+    function shuffleArray(arr) {
+        const a = [...arr]
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]]
+        }
+        return a
+    }
+
+    function getRandomSongs(count) {
+        return Array.from({ length: count }, () => songs[Math.floor(Math.random() * songs.length)])
+    }
+
+    function handleLoopToggle() {
+        if (!loopActive) {
+            setLoopActive(true)
+            if (shuffleActive) {
+                setCombinedOrder('shuffle-first')
+                if (queue.length < 10) {
+                    const extra = getRandomSongs(10 - queue.length)
+                    setQueue([...queue, ...extra])
+                }
+            } else {
+                setCombinedOrder('loop-only')
+                // Queue plays through in order; when it runs out, App's handleSongEnded restarts from songs[0]
+            }
+        } else {
+            setLoopActive(false)
+            setCombinedOrder(null)
+        }
+    }
+
+    function handleShuffleToggle() {
+        if (!shuffleActive) {
+            setShuffleActive(true)
+            if (loopActive) {
+                setCombinedOrder('loop-first')
+                setQueue(getRandomSongs(10))
+            } else {
+                const others = songs.filter(s => s.id !== song?.id)
+                setQueue(song ? [song, ...shuffleArray(others)] : shuffleArray(songs))
+            }
+        } else {
+            setShuffleActive(false)
+            setCombinedOrder(null)
+            if (song) {
+                const idx = songs.findIndex(s => s.id === song.id)
+                setQueue(idx !== -1 ? songs.slice(idx) : songs.slice(0))
+            }
+        }
     }
    
      
@@ -377,13 +442,13 @@ return () => {
                                   height="26"/></div>
           <div className="icon-label">IMPORT</div> 
         </div>
-        <div className="icon" onClick={() => setOpenManage(!openManage)}>
-          <div className="icon-img manage"><img 
+        <div className="icon" onClick={() => setOpenQueue(!openQueue)}>
+          <div className="icon-img manage"><img
                                   src={gearIcon}
                                   alt="options"
                                   width="26"
                                   height="26"/></div>
-          <div className="icon-label">MANAGE</div> 
+          <div className="icon-label">QUEUE</div>
         </div>
 
         <div className="icon" onClick={() => setOpenTutorial(!openTutorial)}>
@@ -396,35 +461,35 @@ return () => {
         </div>
       </div>
       
-       {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} children={<DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} /> } className="songs-window"></Window> : null}
-       {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} children={<>
+       {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} className="songs-window" zIndex={getZIndex('songs')} onFocus={() => bringToFront('songs')}><DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} queue={queue} setQueue={setQueue} /></Window> : null}
+       {openMixer ? <Window title="MIXER" onClose={() => setOpenMixer(!openMixer)} className='mixer-window' zIndex={getZIndex('mixer')} onFocus={() => bringToFront('mixer')}>
        <PitchSlider setPitch={setPitch} disabled={activeButton !== null} />
        <SpeedSlider setSpeed={setSpeed} disabled={activeButton !== null} />
        <ReverbSlider setReverb={setReverb} disabled={activeButton !== null} />
        <NCButton setPitch={setPitch} setSpeed={setSpeed} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
        <LofiButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setFilter={setFilter} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
        <VaporwaveButton setPitch={setPitch} setSpeed={setSpeed} setDecay={setDecay} setReverb={setReverb} setBitCrush={setBitCrush} setMode={setMode} activeButton={activeButton} setActiveButton={setActiveButton} resetAllEffects={resetAllEffects} />
-       {//<LowBitButton setBitCrush={setBitCrush} />
-       }
-       </>} className='mixer-window' ></Window> : null}
-
-       {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} children={<FolderInput onSongsLoaded={addSongs} />} className='import-window' ></Window> : null}
-{openManage ? <Window title="MANAGE" onClose={() => setOpenManage(!openManage)} children={'nothing here yet!'} className='manage-window' ></Window> : null}
-{openTutorial ? <Window title="TUTORIAL" onClose={() => setOpenTutorial(!openTutorial)} children={<TutorialInfo />} className='tutorial-window' ></Window> : null}
+       </Window> : null}
+       {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} className='import-window' zIndex={getZIndex('import')} onFocus={() => bringToFront('import')}><FolderInput onSongsLoaded={addSongs} /></Window> : null}
+       {openQueue ? <Window title="QUEUE" onClose={() => setOpenQueue(!openQueue)} className='queue-window' zIndex={getZIndex('queue')} onFocus={() => bringToFront('queue')}><QueueDisplay queue={queue} setQueue={setQueue} /></Window> : null}
+       {openTutorial ? <Window title="TUTORIAL" onClose={() => setOpenTutorial(!openTutorial)} className='tutorial-window' zIndex={getZIndex('tutorial')} onFocus={() => bringToFront('tutorial')}><TutorialInfo /></Window> : null}
     </div>
     <div className="taskbar">
          
-        {song ? song.title : '♫ nothing playing' }
+        {song ? song.title : '♫ nothing playing' }  
         {song && (
           <>
-            <BackButton song={song} setSong={setSong} songs={songs} /> 
-            <PlayButton playing={playing} setPlay={setPlay} song={song} /> 
-            <NextButton song={song} setSong={setSong} songs={songs} />
+            <BackButton song={song} playSong={playSong} songs={songs} queue={queue} setQueue={setQueue}/> 
+            <PlayButton playing={playing} setPlay={setPlay} song={song} queue={queue} setQueue={setQueue}/> 
+            <NextButton song={song} playSong={playSong} songs={songs} queue={queue} setQueue={setQueue} loopActive={loopActive} shuffleActive={shuffleActive} />
             <SeekBar setTime={setTime} currTime={currTime} totalTime={totalTime} />
           </>
         )
       }
-         
+        <div className="modeButtons">
+          <LoopButton loopActive={loopActive} onToggle={handleLoopToggle} />
+          <ShuffleButton shuffleActive={shuffleActive} onToggle={handleShuffleToggle} />
+        </div>
       </div>
       </>
   )

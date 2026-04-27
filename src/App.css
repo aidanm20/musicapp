@@ -2,4 +2,5 @@
     inset: 0;
     margin: 0;
     border: 0;
+    cursor: url('./assets/svg/pinkCursor.svg') 12 12, auto;
 }

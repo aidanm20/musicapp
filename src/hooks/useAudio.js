@@ -11,9 +11,10 @@ function stopPlayer(player) {
   }
 }
 
-export function useAudio(song, playing, setPlay) {
+export function useAudio(song, playing, setPlay, onEnded) {
   const audioRef = useRef(null)
-  const pitchRef = useRef(null)
+  const onEndedRef = useRef(onEnded)
+  useEffect(() => { onEndedRef.current = onEnded })
   const reverbRef = useRef(null)
   const bitCrushRef= useRef(null)
   const filterRef = useRef(null)
@@ -30,20 +31,11 @@ export function useAudio(song, playing, setPlay) {
   const [currTime, setCurrTime] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
 
-  const getSpeedPitchCompensation = useCallback(playbackRate => {
-    if (!Number.isFinite(playbackRate) || playbackRate <= 0) {
-      return 0
-    }
-
-    return -12 * Math.log2(playbackRate)
-  }, [])
-
   const applyEffectivePitch = useCallback(() => {
-    if (!pitchRef.current) return
-
-    pitchRef.current.pitch =
-      userPitchRef.current + getSpeedPitchCompensation(speedRef.current)
-  }, [getSpeedPitchCompensation])
+    const player = audioRef.current
+    if (!player?.loaded) return
+    player.detune = userPitchRef.current * 100
+  }, [])
 
   const clearProgressTimer = useCallback(() => {
     if (progressTimerRef.current !== null) {
@@ -98,15 +90,16 @@ export function useAudio(song, playing, setPlay) {
     isPlayingRef.current = false
     playbackStartedAtRef.current = null
     playbackOffsetRef.current = totalTimeRef.current
-    setCurrTime(totalTimeRef.current)
+    setCurrTime(totalTimeRef.current / speedRef.current)
     setPlay(false)
+    onEndedRef.current?.()
   }, [clearProgressTimer, setPlay])
 
   const syncDisplayedTime = useCallback(() => {
     if (!audioRef.current?.loaded) return
 
     const nextTime = getLiveTime()
-    setCurrTime(nextTime)
+    setCurrTime(nextTime / speedRef.current)
 
     if (
       isPlayingRef.current &&
@@ -132,7 +125,7 @@ export function useAudio(song, playing, setPlay) {
     playbackOffsetRef.current = safeOffset
     playbackStartedAtRef.current = performance.now()
     isPlayingRef.current = true
-    setCurrTime(safeOffset)
+    setCurrTime(safeOffset / speedRef.current)
 
     if (safeOffset >= totalTimeRef.current && totalTimeRef.current > 0) {
       playbackOffsetRef.current = 0
@@ -159,7 +152,7 @@ export function useAudio(song, playing, setPlay) {
     playbackStartedAtRef.current = null
     isPlayingRef.current = false
     clearProgressTimer()
-    setCurrTime(playbackOffsetRef.current)
+    setCurrTime(playbackOffsetRef.current / speedRef.current)
 
     if (player.state === 'started') {
       stopPlayer(player)
@@ -167,13 +160,11 @@ export function useAudio(song, playing, setPlay) {
   }, [clearProgressTimer, getLiveTime])
 
   useEffect(() => {
-      meterRef.current = new Tone.Meter()
+    meterRef.current = new Tone.Meter()
     reverbRef.current = new Tone.Reverb({ decay: 4, wet: 0 }).toDestination()
-        reverbRef.current.connect(meterRef.current)
+    reverbRef.current.connect(meterRef.current)
     filterRef.current = new Tone.Filter({frequency: 20000}).connect(reverbRef.current)
     bitCrushRef.current = new Tone.BitCrusher({bits: 8}).connect(filterRef.current)
-    pitchRef.current = new Tone.PitchShift({ windowSize: 0.1 }).connect(bitCrushRef.current)
-    applyEffectivePitch()
 
     return () => {
       clearProgressTimer()
@@ -186,8 +177,6 @@ export function useAudio(song, playing, setPlay) {
       }
       bitCrushRef.current?.dispose()
       bitCrushRef.current = null
-      pitchRef.current?.dispose()
-      pitchRef.current = null
       reverbRef.current?.dispose()
       reverbRef.current = null
       filterRef.current?.dispose()
@@ -195,7 +184,7 @@ export function useAudio(song, playing, setPlay) {
       meterRef.current?.dispose()
       meterRef.current = null
     }
-  }, [applyEffectivePitch, clearProgressTimer, clearResetTimer])
+  }, [clearProgressTimer, clearResetTimer])
 
   useEffect(() => {
     clearProgressTimer()
@@ -232,15 +221,18 @@ export function useAudio(song, playing, setPlay) {
       return
     }
 
-    const player = new Tone.Player({
+    const player = new Tone.GrainPlayer({
       url: source,
+      grainSize: 0.2,
+      overlap: 0.05,
       onload: () => {
         if (cancelled) return
 
         clearResetTimer()
         player.playbackRate = speedRef.current
+        applyEffectivePitch()
         totalTimeRef.current = player.buffer.duration
-        setTotalTime(player.buffer.duration)
+        setTotalTime(player.buffer.duration / speedRef.current)
         setCurrTime(0)
 
         Tone.start()
@@ -260,7 +252,7 @@ export function useAudio(song, playing, setPlay) {
           console.error('Audio error:', error)
         }
       },
-    }).connect(pitchRef.current ?? Tone.getDestination())
+    }).connect(bitCrushRef.current ?? Tone.getDestination())
 
     audioRef.current = player
 
@@ -277,7 +269,7 @@ export function useAudio(song, playing, setPlay) {
       player.dispose()
       if (fallbackSrc) URL.revokeObjectURL(fallbackSrc)
     }
-  }, [beginPlayback, clearProgressTimer, clearResetTimer, resetDisplayedPlayback, setPlay, song])
+  }, [applyEffectivePitch, beginPlayback, clearProgressTimer, clearResetTimer, resetDisplayedPlayback, setPlay, song])
 
   useEffect(() => {
     if (!audioRef.current?.loaded) return
@@ -325,6 +317,11 @@ export function useAudio(song, playing, setPlay) {
     }
 
     applyEffectivePitch()
+
+    if (audioRef.current?.buffer) {
+      setTotalTime(audioRef.current.buffer.duration / numericValue)
+      setCurrTime(playbackOffsetRef.current / numericValue)
+    }
   }
 
   function setFilter(value) {
@@ -333,10 +330,10 @@ export function useAudio(song, playing, setPlay) {
 
   function setTime(value) {
     const player = audioRef.current
-    const safeOffset = clampTime(Number(value))
+    const audioOffset = clampTime(Number(value) * speedRef.current)
 
-    playbackOffsetRef.current = safeOffset
-    setCurrTime(safeOffset)
+    playbackOffsetRef.current = audioOffset
+    setCurrTime(audioOffset / speedRef.current)
 
     if (!player?.loaded) return
 
@@ -344,10 +341,10 @@ export function useAudio(song, playing, setPlay) {
       return
     }
 
-    if (safeOffset >= totalTimeRef.current && totalTimeRef.current > 0) {
+    if (audioOffset >= totalTimeRef.current && totalTimeRef.current > 0) {
       pausePlayback()
       playbackOffsetRef.current = totalTimeRef.current
-      setCurrTime(totalTimeRef.current)
+      setCurrTime(totalTimeRef.current / speedRef.current)
       setPlay(false)
       return
     }
@@ -355,9 +352,9 @@ export function useAudio(song, playing, setPlay) {
     playbackStartedAtRef.current = performance.now()
 
     if (player.state === 'started') {
-      player.seek(safeOffset)
+      player.restart(Tone.now(), audioOffset)
     } else {
-      player.start(Tone.now(), safeOffset)
+      player.start(Tone.now(), audioOffset)
     }
 
     startProgressTimer()

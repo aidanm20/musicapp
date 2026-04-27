@@ -138,6 +138,12 @@ body {
     opacity: 0;
 }
 
+.modeButtons {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
 .webgl {
     position: fixed;
     top: 0;

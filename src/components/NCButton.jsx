@@ -7,8 +7,8 @@ function NCButton({setPitch, setSpeed, setMode, activeButton, setActiveButton, r
     function turnthistvoff() {
         if (!active) {
             resetAllEffects()
-            setPitch(2.69)
-            setSpeed(1.23456789)
+            setPitch(8)
+            setSpeed(1.3)
             setActiveButton('nightcore')
             setMode('nightcore')
         } else {

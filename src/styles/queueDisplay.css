@@ -1,0 +1,32 @@
+.queue-display {
+    width: 100%;
+}
+
+.queue-display .songRow {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.queueContextMenu {
+  z-index: 99999;
+  position: fixed;
+  background: #7300ff;
+  border: 2px solid #ff69b4;
+  box-shadow: 4px 4px 0 #8b0057;
+  padding: 8px;
+  width: 120px;
+  height: 50px;
+}
+
+.queueContextMenu p {
+  color: #ff69b4;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+}
+
+.queueContextMenu p:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: #00ffff;
+}

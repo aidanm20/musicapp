@@ -1,8 +1,9 @@
 import ThreeDots from '../assets/svg/three-dots-svgrepo-com.svg'
 import '../styles/displaySongs.css'
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
-function DisplaySongs({ setSong, songs, deleteSong }) {
+function DisplaySongs({ setSong, songs, deleteSong, queue, setQueue }) {
     const [openedMenu, setOpenedMenu] = useState(null)
 
     useEffect(() => {
@@ -15,20 +16,12 @@ function DisplaySongs({ setSong, songs, deleteSong }) {
     }, [])
 
     function openContextMenu(e, song) {
-        console.log('[songs-ui] opening context menu', {
-            id: song.id,
-            title: song.title,
-            broken: song.broken,
-            x: e.clientX,
-            y: e.clientY,
-        })
-
         e.stopPropagation()
         if (openedMenu?.song?.id === song.id) {
             setOpenedMenu(null)
-        } else {
-            setOpenedMenu({ x: e.clientX - 400, y: e.clientY - 130, song })
+            return
         }
+        setOpenedMenu({ x: e.clientX, y: e.clientY + 20, song })
     }
 
     return (
@@ -57,25 +50,27 @@ function DisplaySongs({ setSong, songs, deleteSong }) {
                 </div>
             ))}
 
-            {openedMenu && (
-                <div className="contextMenu" style={{ position: 'fixed', left: openedMenu.x, top: openedMenu.y }}>
+            {openedMenu && createPortal(
+                <div className="contextMenu" style={{ left: openedMenu.x, top: openedMenu.y }}>
                     {openedMenu.song.broken
                         ? <p>Re-import song</p>
                         : <p onClick={() => {
-                            console.log('[songs-ui] context play clicked', {
-                                id: openedMenu.song.id,
-                                title: openedMenu.song.title,
-                            })
                             setSong(openedMenu.song)
                         }}>Play</p>}
+
                     <p onClick={() => {
-                        console.log('[songs-ui] context delete clicked', {
-                            id: openedMenu.song.id,
-                            title: openedMenu.song.title,
-                        })
+                        setQueue([...queue, openedMenu.song])
+                    }}>Add to Q</p>
+                    <p onClick={() => {
+                        setQueue(queue.length > 0
+                            ? [queue[0], openedMenu.song, ...queue.slice(1)]
+                            : [openedMenu.song])
+                    }}>Play Next</p>
+                    <p onClick={() => {
                         deleteSong(openedMenu.song.id)
                     }}>Delete</p>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     )

@@ -7,11 +7,11 @@ function LofiButton({setPitch, setSpeed, setReverb, setDecay, setFilter, setMode
     function turnthistvoff() {
         if (!active) {
             resetAllEffects()
-            setPitch(-1.5)
-            setSpeed(.8)
+            setPitch(-6)
+            setSpeed(.72)
             setDecay(.8)
             setReverb(.5)
-            setFilter(1000)
+            setFilter(800)
             setActiveButton('lofi')
             setMode('lofi')
         } else {
