@@ -5,6 +5,8 @@
 .queue-display .songRow {
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 .queueContextMenu {
@@ -29,4 +31,17 @@
 .queueContextMenu p:hover {
   background: rgba(255, 105, 180, 0.1);
   color: #00ffff;
+}
+
+
+.updown-handle {
+    cursor: grab;
+}
+
+.updown-handle:active {
+    cursor: grabbing;
+}
+
+.songRow {
+    user-select: none;
 }

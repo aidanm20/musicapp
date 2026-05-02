@@ -7,8 +7,8 @@
  
 
 .songs-window {
-    background-color: #fecde6;
-    border: 2px solid #fd84c1;
+    background-color: #fecde6da;
+    border: 3px solid #fd84c1;
     width: 600px;
     height: 450px;
     position: absolute;
@@ -17,8 +17,8 @@
 }
 
 .import-window {
-    background-color: #ccaaff;
-    border: 2px solid #9351f7;
+    background-color: #ccaaffda;
+    border: 3px solid #9351f7;
     width: 500px;
     height: 130px;
     position: absolute;
@@ -27,8 +27,8 @@
 }
 
 .mixer-window {
-    background-color: #bdfde1;
-    border: 2px solid #00ff91;
+    background-color: #bdfde1d3;
+    border: 3px solid #00ff91;
     width: 450px;
     height: 300px;
     position: absolute;
@@ -37,8 +37,8 @@
 }
 
 .queue-window {
-    background-color: #fedbbc;
-    border: 2px solid #ffaa60;
+    background-color: #fedbbcea;
+    border: 3px solid #ffaa60;
     width: 400px;
     height: 500px;
     position: absolute;
@@ -47,10 +47,10 @@
 }
 
 .tutorial-window {
-    background-color: #f5febc ;  
-    border: 2px solid #f7ff60;
+    background-color: #f5e7a2ae;  
+    border: 3px solid #7b5252;
     width: 400px;
-    height: 220px;
+    height: 320px;
     position: absolute;
     left: 5%;
     top: 50%;
