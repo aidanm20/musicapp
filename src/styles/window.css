@@ -47,13 +47,23 @@
 }
 
 .tutorial-window {
-    background-color: #f5e7a2ae;  
-    border: 3px solid #7b5252;
+    background-color: #f5e7a2c4;  
+    border: 3px solid #f5e7a2;
     width: 400px;
-    height: 320px;
+    height: 420px;
     position: absolute;
-    left: 5%;
-    top: 50%;
+    left: 2%;
+    top: 45%;
+}
+
+.timer-window {
+    background-color: #92aafadf;  
+    border: 3px solid #5877de;
+    width: 300px;
+    height: 220px;
+    position: absolute;
+    left: 60%;
+    top: 5%;
 }
 
 .window-titlebar {

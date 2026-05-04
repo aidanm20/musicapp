@@ -9,6 +9,7 @@ import BackButton from './BackButton'
 import PlayButton from './PlayButton'
 import NextButton from './NextButton'
 import PitchSlider from './PitchSlider'
+import TimerContent from './TimerContent'
 import SeekBar from './SeekBar'
 import * as THREE from 'three'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -42,6 +43,7 @@ function Desktop({ songs, setSong, song, playing, setPlay, setPitch, setSpeed, a
     const [openImport, setOpenImport] = useState(false)
     const [openQueue, setOpenQueue] = useState(false)
     const [openTutorial, setOpenTutorial] = useState(false)
+    const [openTimer, setOpenTimer] = useState(false)
     const [mode, setMode] = useState('default')
     const [activeButton, setActiveButton] = useState(null)
     const [combinedOrder, setCombinedOrder] = useState(null)
@@ -459,6 +461,15 @@ return () => {
                                   height="26"/></div>
           <div className="icon-label">TUTORIAL</div> 
         </div>
+
+        <div className="icon" onClick={() => setOpenTimer(!openTimer)}>
+          <div className="icon-img timer"><img 
+                                  src={tutorialIcon}
+                                  alt="options"
+                                  width="26"
+                                  height="26"/></div>
+          <div className="icon-label">TIMER</div> 
+        </div>
       </div>
       
        {openSongs ? <Window title="SONGS" onClose={() => setOpenSongs(!openSongs)} className="songs-window" zIndex={getZIndex('songs')} onFocus={() => bringToFront('songs')}><DisplaySongs setSong={setSong} songs={songs} deleteSong={deleteSong} queue={queue} setQueue={setQueue} /></Window> : null}
@@ -473,6 +484,7 @@ return () => {
        {openImport ? <Window title="IMPORT" onClose={() => setOpenImport(!openImport)} className='import-window' zIndex={getZIndex('import')} onFocus={() => bringToFront('import')}><FolderInput onSongsLoaded={addSongs} /></Window> : null}
        {openQueue ? <Window title="QUEUE" onClose={() => setOpenQueue(!openQueue)} className='queue-window' zIndex={getZIndex('queue')} onFocus={() => bringToFront('queue')}><QueueDisplay queue={queue} setQueue={setQueue} /></Window> : null}
        {openTutorial ? <Window title="TUTORIAL" onClose={() => setOpenTutorial(!openTutorial)} className='tutorial-window' zIndex={getZIndex('tutorial')} onFocus={() => bringToFront('tutorial')}><TutorialInfo /></Window> : null}
+       {openTimer ? <Window title="TIMER" onClose={() => setOpenTimer(!openTimer)} className='timer-window' zIndex={getZIndex('timer')} onFocus={() => bringToFront('timer')}><TimerContent setPlay={setPlay} playing={playing}/></Window> : null}
     </div>
     <div className="taskbar">
          

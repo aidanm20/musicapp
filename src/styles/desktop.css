@@ -95,8 +95,14 @@ body {
 }
 .tutorial {
   background: linear-gradient(135deg, #faf0bc, #ffe76d);
-    border: 3px solid rgb(190, 138, 135);
-    box-shadow: 4px 4px 0 #502524;
+    border: 3px solid #e8ce4b;
+    box-shadow: 4px 4px 0 #ae9f56;
+}
+
+.timer {
+  background: linear-gradient(135deg, #bccafa, #92abfa);
+    border: 3px solid #6083f8;
+    box-shadow: 4px 4px 0 #455fb5;
 }
 
 .icon-img {
