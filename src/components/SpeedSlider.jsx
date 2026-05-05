@@ -1,5 +1,5 @@
 import {useState} from 'react'
-
+import '../styles/slider.css'
 function SpeedSlider({ setSpeed, disabled }) {
   let [value, setValue] = useState(1)
     return (

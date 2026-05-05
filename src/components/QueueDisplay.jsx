@@ -16,9 +16,7 @@ function QueueDisplay({ queue, setQueue }) {
         if (rowRefs.current.length === 0) return
 
         gsap.registerPlugin(Draggable)
-
-        // Fix 1: compact nulls (React sets ref to null on unmount) then clear transforms
-        // before measuring — stale offsets on reused DOM nodes cause rollback/overlap.
+ 
         rowRefs.current = rowRefs.current.filter(Boolean)
         gsap.killTweensOf(rowRefs.current)
         gsap.set(rowRefs.current, { y: 0 })
@@ -43,11 +41,7 @@ function QueueDisplay({ queue, setQueue }) {
         draggablesRef.current = []
         rowRefs.current.forEach((rowEl, i) => {
             const upDownImg = rowEl.querySelector('.updown-handle')
-
-            // Track target during drag so onDragEnd can use the same index.
-            // We do NOT use GSAP's snap option because its callback fires AFTER
-            // onDragEnd, meaning pendingTargetIdx would still be `i` (no-op splice).
-            // Instead we drive the snap animation manually inside onDragEnd.
+ 
             let pendingTargetIdx = i
 
             const [draggable] = Draggable.create(rowEl, {
@@ -69,16 +63,11 @@ function QueueDisplay({ queue, setQueue }) {
                 },
                 onDragEnd() {
                     const targetIdx = pendingTargetIdx
-
-                    // Correct snap position for variable heights:
-                    // moving DOWN — other rows shifted up by heights[i], gap opens after target row
-                    // moving UP  — target top is the correct snap destination (unchanged formula)
+ 
                     const snapY = targetIdx > i
                         ? tops[targetIdx] + heights[targetIdx] - heights[i] - tops[i]
                         : tops[targetIdx] - tops[i]
-
-                    // Lock other rows to their final shifted positions so they don't
-                    // drift while the dragged row is animating to its snap target.
+ 
                     rowRefs.current.forEach((ref, j) => {
                         if (j === i) return
                         let finalShift = 0
@@ -87,10 +76,7 @@ function QueueDisplay({ queue, setQueue }) {
                         gsap.killTweensOf(ref)
                         gsap.set(ref, { y: finalShift })
                     })
-
-                    // Animate the dragged row to the snap position, then commit to
-                    // React state only after the animation finishes — this prevents
-                    // React's re-render from killing the snap mid-flight.
+ 
                     gsap.to(rowEl, {
                         y: snapY,
                         duration: 0.15,
@@ -147,7 +133,7 @@ function QueueDisplay({ queue, setQueue }) {
                             width="16"
                             height="16" 
                         />
-                        <p>{song.title}</p>
+                        <p className='songTitle'>{song.title}</p>
                         <img
                             className='threeDots'
                             src={ThreeDots}

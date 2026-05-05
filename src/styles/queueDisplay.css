@@ -36,6 +36,7 @@
 
 .updown-handle {
     cursor: grab;
+     
 }
 
 .updown-handle:active {
@@ -44,4 +45,8 @@
 
 .songRow {
     user-select: none;
+}
+
+.songTitle {
+  margin-left: 20px;
 }
