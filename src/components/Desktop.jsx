@@ -21,11 +21,12 @@ import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 import gridTextureUrl from '../assets/maps/grid-6.png'
 import displacementUrl from '../assets/maps/displacement-7.png'
 import metalnessUrl from '../assets/maps/metalness-2.png'
-import noteIcon from '../assets/svg/music-note-svgrepo-com.svg'
-import fileIcon from '../assets/svg/music-note-on-folder-svgrepo-com.svg'
-import gearIcon from '../assets/svg/gear-svgrepo-com.svg'
-import mixerIcon from '../assets/svg/mixer-studio-audio-sound-svgrepo-com.svg'
-import tutorialIcon from '../assets/svg/info-svgrepo-com.svg'
+import noteIcon from '../assets/svg/newDicons/musicnote.png'
+import fileIcon from '../assets/svg/newDicons/musicnotefile.png'
+import gearIcon from '../assets/svg/newDicons/gearicon.png'
+import mixerIcon from '../assets/svg/newDicons/mixericon.png'
+import tutorialIcon from '../assets/svg/newDicons/infobutton.png'
+import timerIcon from '../assets/svg/newDicons/hourglass.png'
 import ReverbSlider from './reverbSlider'
 import LowBitButton from './LowBitButton'
 import VaporwaveButton from './VaporwaveButton'
@@ -424,32 +425,34 @@ return () => {
           <div className="icon-img songs"><img 
                                   src={noteIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26" /></div>
+                                  width="64"
+                                  height="64" /></div>
           <div className="icon-label">SONGS</div>
         </div>
         <div className="icon" onClick={() => setOpenMixer(!openMixer)}>
           <div className="icon-img mixer"><img 
                                   src={mixerIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26"/></div>
+                                  width="64"
+                                  height="64"
+                                  
+                                  /></div>
           <div className="icon-label">MIXER</div> 
         </div>
         <div className="icon" onClick={() => setOpenImport(!openImport)}>
           <div className="icon-img import"><img 
                                   src={fileIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26"/></div>
+                                  width="64"
+                                  height="64"/></div>
           <div className="icon-label">IMPORT</div> 
         </div>
         <div className="icon" onClick={() => setOpenQueue(!openQueue)}>
           <div className="icon-img manage"><img
                                   src={gearIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26"/></div>
+                                  width="64"
+                                  height="64"/></div>
           <div className="icon-label">QUEUE</div>
         </div>
 
@@ -457,17 +460,17 @@ return () => {
           <div className="icon-img tutorial"><img 
                                   src={tutorialIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26"/></div>
+                                  width="64"
+                                  height="64"/></div>
           <div className="icon-label">TUTORIAL</div> 
         </div>
 
         <div className="icon" onClick={() => setOpenTimer(!openTimer)}>
           <div className="icon-img timer"><img 
-                                  src={tutorialIcon}
+                                  src={timerIcon}
                                   alt="options"
-                                  width="26"
-                                  height="26"/></div>
+                                  width="64"
+                                  height="64"/></div>
           <div className="icon-label">TIMER</div> 
         </div>
       </div>

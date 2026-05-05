@@ -129,7 +129,7 @@ function TimerContent({playing, setPlay}) {
          
          
         
-        <div className="explain">Pomodoro is a 25 min on 5 minute off system for working.</div>
+        <div className="explain">Music will play for 25 minutes then pause for 5 minutes. This cycle will repeat. Closing this window will reset timer.</div>
          
       </div>
          

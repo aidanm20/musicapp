@@ -23,7 +23,7 @@
 .queueContextMenu p {
   color: #ff69b4;
   padding: 6px 10px;
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
   font-family: 'VT323', monospace;
   font-size: 18px;
 }

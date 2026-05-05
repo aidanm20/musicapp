@@ -3,7 +3,7 @@
   border: 0;
   filter: brightness(0) saturate(100%) invert(51%) sepia(90%) saturate(800%) hue-rotate(295deg) brightness(1.1);
   align-items: center;
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
   border: 3px rgb(0, 0, 0) solid;
   margin: 7px;
   padding: 2px;
@@ -14,11 +14,11 @@
 }
 
 .taskbarButton:hover {
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
 }
 
 .taskbarButton img {
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
 }
 
 .modeButton {
@@ -26,7 +26,7 @@
   border: 2px solid transparent;
   padding: 2px;
   opacity: 0.4;
-  cursor: pointer; 
+  cursor: var(--app-cursor-pointer);
   display: flex;
   flex-direction: row;
   margin: 5px;

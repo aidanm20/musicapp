@@ -1,8 +1,13 @@
+:root {
+  --app-cursor-default: url('../assets/svg/pinkCursor.svg') 12 12, auto;
+  --app-cursor-pointer: url('../assets/svg/pinkPointer.svg') 3 2, pointer;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: url(../assets/svg/pinkCursor.svg) 12 12, auto;
+  cursor: var(--app-cursor-default);
 }
 
 body {
@@ -53,7 +58,9 @@ body {
 
 .icons {
   display: grid;
-  grid-template-columns: repeat(4, 80px);
+  grid-template-columns: repeat(4, 107px);
+  justify-items: center;
+  align-items: start;
   gap: 20px;
   padding: 28px;
 }
@@ -63,7 +70,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  cursor: pointer; 
+  cursor: var(--app-cursor-pointer);
   padding: 8px 24px;
   width: 107px;
   border: 2px solid transparent;
@@ -108,11 +115,17 @@ body {
 .icon-img {
   width: 70px;
   height: 70px;
-   
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 22px;
+}
+
+.icon-img img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
 }
 
 .icon-label {
@@ -121,6 +134,25 @@ body {
   color: white;
   text-align: center;
   text-shadow: 2px 2px 0 #ff69b4;
+}
+
+:where(
+  button,
+  button *,
+  .icon,
+  .icon *,
+  .songRow,
+  .songRow *,
+  .contextMenu p,
+  .importBtn,
+  .importBtn *,
+  .closeButton,
+  .closeButton *,
+  .window-titlebar,
+  .window-titlebar *,
+  input[type="range"]
+) {
+  cursor: var(--app-cursor-pointer);
 }
 
 .taskbar {

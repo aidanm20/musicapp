@@ -83,7 +83,7 @@
     border: rgb(255, 0, 230) 2px solid;
     color: rgb(255, 0, 230);
     font-family: 'Press Start 2P', monospace;
-    cursor: pointer;
+    cursor: var(--app-cursor-pointer);
 }
 
 .window-content {
@@ -99,7 +99,7 @@
 
 .window-content::-webkit-scrollbar-track {
     background: #1a0030;
-    border-left: 2px solid #7300ff;
+    border-left: 2px solid #7300ff; 
 }
 
 .window-content::-webkit-scrollbar-thumb {

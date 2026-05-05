@@ -4,7 +4,7 @@
 }
 
 .importBtn {
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
   padding: 10px 20px;
   border: 2px solid #ff69b4;
   color: #000000;

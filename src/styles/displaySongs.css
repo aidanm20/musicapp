@@ -16,7 +16,7 @@
 
 .songRow:hover {
     background-color: rgba(44, 48, 47, 0.233);
-    cursor: pointer;
+    cursor: var(--app-cursor-pointer);
 }
 
 .songRowBroken {
@@ -41,7 +41,7 @@
 .contextMenu p {
   color: #ff69b4;
   padding: 6px 10px;
-  cursor: pointer;
+  cursor: var(--app-cursor-pointer);
   font-family: 'VT323', monospace;
   font-size: 18px;
 }
