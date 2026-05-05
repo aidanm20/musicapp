@@ -60,7 +60,7 @@
     background-color: #92aafadf;  
     border: 3px solid #5877de;
     width: 300px;
-    height: 220px;
+    height: 250px;
     position: absolute;
     left: 60%;
     top: 5%;
@@ -75,11 +75,17 @@
 
 .closeButton {
     margin-left: auto;
-    width: 20px;
-    height: 20px;
-    text-align: center; 
-    background-color: rgba(255, 0, 0, 0);
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    line-height: 0;
+    font-size: 10px;
+    text-align: center;
+    padding-left: 2px;
+    background-color: rgba(255, 0, 0, 0);
     border: rgb(255, 0, 230) 2px solid;
     color: rgb(255, 0, 230);
     font-family: 'Press Start 2P', monospace;
