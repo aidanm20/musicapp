@@ -21,6 +21,7 @@ function TutorialInfo() {
         <li>Drag titlebars to move windows</li>
         <li>Click desktop icons to open windows</li>
         <li>Import songs via the IMPORT window, multiple can be imported at once using folder option</li> 
+        <li>Drag the icon in queue to change song order manually</li> 
       </ul>
 
       <p className="tutorial-heading">MIXER</p>
@@ -38,6 +39,8 @@ function TutorialInfo() {
         <li>Playing a song will give you control in bottom taskbar</li>
         <li>Loop &amp; shuffle buttons on taskbar right</li>
       </ul>
+
+      
   
     </div>
   )
