@@ -1,6 +1,6 @@
 :root {
-    --app-cursor-default: url('./assets/svg/pinkCursor.svg') 12 12, auto;
-    --app-cursor-pointer: url('./assets/svg/pinkPointer.svg') 3 2, pointer;
+    --app-cursor-default: url('./assets/svg/pinkCursor.png') 12 12, auto;
+    --app-cursor-pointer: url('./assets/svg/pinkPointer.png') 3 2, pointer;
 }
 
 * {
