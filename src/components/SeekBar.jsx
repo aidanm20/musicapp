@@ -45,8 +45,8 @@ function SeekBar({ setTime, currTime, totalTime }) {
           commitDrag(e.currentTarget.value)
         }}
       />
-      <span>current: {timeFormat(displayedTime)}</span>
-      <span>total: {timeFormat(totalTime)}</span>
+      <span style={{padding: '5px'}}>current: {timeFormat(displayedTime)}</span>
+      <span style={{padding: '5px'}}>total: {timeFormat(totalTime)}</span>
     </>
   )
 }

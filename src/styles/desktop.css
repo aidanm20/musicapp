@@ -1,6 +1,7 @@
 :root {
-  --app-cursor-default: url('../assets/svg/pinkCursor.png') 12 12, auto;
-  --app-cursor-pointer: url('../assets/svg/pinkPointer.png') 3 2, pointer;
+  --app-cursor-default: url('../assets/svg/pinkCursor.png') 3 3, auto;
+  --app-cursor-pointer: url('../assets/svg/pinkPointer.png') 7 0, pointer;
+  --ui-scale: 1;
 }
 
 * {
@@ -15,10 +16,23 @@ body {
   overflow: hidden;
 }
 
+.app-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.app-scale {
+  width: calc(100vw / var(--ui-scale));
+  height: calc(100vh / var(--ui-scale));
+  transform: scale(var(--ui-scale));
+  transform-origin: top left;
+}
+
 .desktop {
   background: transparent;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   font-family: 'VT323', monospace;
   position: relative;
   overflow: hidden;
@@ -156,12 +170,11 @@ body {
 }
 
 .taskbar {
-  position: absolute;
-  top: 90vh;
-  bottom: 100vh;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0; 
-  min-height: 10vh;
+  height: 80px;
   background: rgba(38, 0, 33, 0.774);
   border-top: 3px solid #fecde6;
   display: flex;
@@ -187,4 +200,34 @@ body {
     top: 0;
     left: 0;
     outline: none;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --ui-scale: 0.9;
+  }
+}
+
+@media (max-width: 800px) {
+  :root {
+    --ui-scale: 0.8;
+  }
+  .taskSongTitle {
+    display: none
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --ui-scale: 0.7;
+  }
+  .taskSongTitle {
+    display: none
+  }
+}
+
+@media (max-height: 500px) {
+  :root {
+    --ui-scale: 0.7;
+  }
 }

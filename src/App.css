@@ -4,7 +4,6 @@
 }
 
 * {
-    inset: 0;
     margin: 0;
     border: 0;
     cursor: var(--app-cursor-default);

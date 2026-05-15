@@ -418,6 +418,8 @@ return () => {
         left: 0, 
         zIndex: -1  
       }} />
+    <div className="app-shell">
+    <div className="app-scale">
     <div className="desktop">
       <div className="scanlines"></div>
       <div className="icons">
@@ -491,7 +493,7 @@ return () => {
     </div>
     <div className="taskbar">
          
-        {song ? song.title : '♫ nothing playing' }  
+        {song ? <div className='taskSongTitle'>{song.title}</div> : '♫ nothing playing' }  
         {song && (
           <>
             <BackButton song={song} playSong={playSong} songs={songs} queue={queue} setQueue={setQueue}/> 
@@ -505,6 +507,8 @@ return () => {
           <LoopButton loopActive={loopActive} onToggle={handleLoopToggle} />
           <ShuffleButton shuffleActive={shuffleActive} onToggle={handleShuffleToggle} />
         </div>
+      </div>
+      </div>
       </div>
       </>
   )
